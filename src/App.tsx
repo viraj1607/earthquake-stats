@@ -1,16 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ChartPanel from "./pages/ChartPanel";
+import DataPanel from "./pages/DataPanel";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      
+      <Router>
+        <Routes>
+          <Route path="/chart" element={<ChartPanel />} />
+          <Route path="/data" element={<DataPanel />} />
+        </Routes>
+      </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
