@@ -6,4 +6,4 @@ const DataPanel:React.FC = () => {
   )
 }
 
-export default DataPanel;
+export default DataPanel
