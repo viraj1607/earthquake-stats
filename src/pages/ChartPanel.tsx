@@ -25,7 +25,11 @@ const numericFields = [
   "magNst",
 ];
 
-export default function ChartPanel() {
+interface ChartPanelProps {
+  selectedRow: any | null;
+}
+
+export default function ChartPanel({ selectedRow }: ChartPanelProps) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [xKey, setXKey] = useState("mag");
@@ -112,7 +116,7 @@ export default function ChartPanel() {
           <ResponsiveContainer
             width="100%"
             height="100%"
-            key={`${xKey}-${yKey}-${filteredData.length}`} 
+            key={`${xKey}-${yKey}-${filteredData.length}`}
           >
             {filteredData && (
               <ScatterChart>
@@ -132,8 +136,27 @@ export default function ChartPanel() {
                 <Tooltip cursor={{ strokeDasharray: "3 3" }} />
                 <Scatter
                   name="Earthquakes"
-                  data={filteredData}
-                  fill="#06b6d4"
+                  data={filteredData.map((point) => ({
+                    ...point,
+                    highlight:
+                      selectedRow &&
+                      point.time === selectedRow.time && // match logic based on a unique field
+                      point.mag === selectedRow.mag,
+                  }))}
+                  shape={(props:any) => {
+                    const color = props.payload.highlight
+                      ? "#f43f5e"
+                      : "#06b6d4"; // red if selected
+                    const radius = props.payload.highlight ? 10 : 5;
+                    return (
+                      <circle
+                        cx={props.cx}
+                        cy={props.cy}
+                        r={radius}
+                        fill={color}
+                      />
+                    );
+                  }}
                   isAnimationActive={false}
                 />
               </ScatterChart>
